@@ -21,14 +21,15 @@ namespace Tetris
     {
       Window w = new Window("Tetris!", 400, 800);
       Game game = new Game();
+
       while (!w.CloseRequested)
       {
+        game.Update();
 
-        // game.Update();
         w.Clear(Color.White);
         game.Draw();
+
         SplashKit.RefreshScreen(60);
-        // game.Draw();
         SplashKit.ProcessEvents();
       }
     }

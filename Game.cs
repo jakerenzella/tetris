@@ -37,9 +37,10 @@ namespace Tetris
     }
     public void Update()
     {
-      if ((((int)timer.Ticks) / 10) >= ticks)
+      if ((((int)timer.Ticks) / 1000) >= ticks)
       {
         tetrominos.Update();
+        Console.WriteLine("Tick");
         ticks++;
       }
     }

@@ -46,7 +46,7 @@ namespace Tetris
     private double _fallingSpeed = 0.22;
     public bool Active { get; set; }
     public Color clr { get; private set; }
-    public bool[] shape;
+    public bool[,] shape;
     public double X, Y;
     private Direction direction;
 
@@ -61,58 +61,57 @@ namespace Tetris
       Y = 0;
       Active = true;
 
-      // shape = new bool[8] { false, true, true, false, false, false, false, true };
+      shape = new bool[,] // O
+                {
+                    { true, true },
+                    { true, true }
+                };
     }
 
     // public int GridLocations { get {
       // return location.X
     // }}
 
-    private double _getBottomPosition()
-    {
-      for (int i = 7; i > 3; i--)
-      {
-        if (shape[i])
-        {
-          return GameConstants.GridSize * 2 + (Y * GameConstants.GridSize);
-        }
-      }
-      return Y;
-    }
+    // private double _getBottomPosition()
+    // {
+    //   for (int i = 7; i > 3; i--)
+    //   {
+    //     if (shape[i])
+    //     {
+    //       return GameConstants.GridSize * 2 + (Y * GameConstants.GridSize);
+    //     }
+    //   }
+    //   return Y;
+    // }
 
 
     public void Update()
     {
       if (Active)
       {
-        Y += _fallingSpeed;
+        Y ++;
       }
       // Console.WriteLine(location.Y);
 
-      if (_getBottomPosition() <= 0)
-      {
-        Active = false;
-      }
+      // if (_getBottomPosition() <= 0)
+      // {
+      //   Active = false;
+      // }
     }
 
     public void Draw()
     {
-      for (int i = 0; i < 4; i++)
+      for (int col = 0; col < shape.GetLength(0); col++)
       {
-        if (shape[i])
+        for (int row = 0; row < shape.GetLength(1); row++)
         {
-          SplashKit.FillRectangle(Color.DeepSkyBlue, X * 20 + (i * 20), Y * 20, 20, 20);
-          SplashKit.DrawRectangle(Color.BlueViolet, X * 20 + (i * 20), Y * 20, 20, 20);
+          if (shape[col, row])
+          {
+            SplashKit.FillRectangle(Color.Red, col + X * GameConstants.GameWidth, row + Y * GameConstants.GameWidth, GameConstants.GameWidth, GameConstants.GameHeight);
+          }
         }
       }
-      for (int i = 0; i < 4; i++)
-      {
-        if (shape[i + 4])
-        {
-          SplashKit.FillRectangle(Color.DeepSkyBlue, X * 20 + (i * 20), Y * 20 + 20, 20, 20);
-          SplashKit.DrawRectangle(Color.BlueViolet, X * 20 + (i * 20), Y * 20 + 20, 20, 20);
-        }
-      }
+
     }
   }
 }
