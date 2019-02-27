@@ -63,8 +63,8 @@ namespace Tetris
 
       shape = new bool[,] // O
                 {
-                    { true, true },
-                    { true, true }
+                    { true, true, true },
+                    { true, true, false }
                 };
     }
 
@@ -101,13 +101,15 @@ namespace Tetris
 
     public void Draw()
     {
-      for (int col = 0; col < shape.GetLength(0); col++)
+      for (int row = 0; row < shape.GetLength(0); row++)
       {
-        for (int row = 0; row < shape.GetLength(1); row++)
+        for (int col = 0; col < shape.GetLength(1); col++)
         {
-          if (shape[col, row])
+          if (shape[row, col])
           {
-            SplashKit.FillRectangle(Color.Red, col + X * GameConstants.GameWidth, row + Y * GameConstants.GameWidth, GameConstants.GameWidth, GameConstants.GameHeight);
+            double x = X * GameConstants.GameWidth + (col * GameConstants.GameWidth);
+            double y = Y * GameConstants.GameHeight + (row * GameConstants.GameHeight);
+            SplashKit.FillRectangle(Color.Red, x, y, GameConstants.GameWidth, GameConstants.GameHeight);
           }
         }
       }
