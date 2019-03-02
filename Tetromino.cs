@@ -49,11 +49,6 @@ namespace Tetris
       tetromino.Y++;
     }
 
-    // public static void Drop(Tetromino tetromino)
-    // {
-    //   tetromino.Y++;
-    // }
-
     public static void MoveLeft(Tetromino tetromino)
     {
       tetromino.X--;
