@@ -11,28 +11,32 @@ namespace Tetris
     public bool[,] Shape { get; private set; }
     public int X, Y;
 
-    // public int Width {
-    //   get {
-    //     return Shape.GetLength(0) + 1;
-    //   }
-    // }
+    public int Width
+    {
+      get
+      {
+        return Math.Max(Shape.GetLength(0), Shape.GetLength(1));
+      }
+    }
 
-    // public int Height {
-    //   get {
-    //     return Shape.GetLength(1) + 1;
-    //   }
-    // }
+    public int Height
+    {
+      get
+      {
+        return Shape.Rank;
+      }
+    }
 
     public Tetromino()
     {
       X = 2;
       Y = 0;
 
-      Shape = new bool[,] // O
-                {
-                    { true, true, true, true, true, true, true, true, true },
-                    { false, false, false, true, true, false, false, false, false }
-                };
+      Shape = new bool[,]
+      {
+          { true, true, true, true },
+          { false, false, false, true }
+      };
     }
 
     public object Clone()
@@ -40,32 +44,24 @@ namespace Tetris
       return this.MemberwiseClone();
     }
 
-    // public int GridLocations { get {
-    // return location.X
-    // }}
+    public static void Fall(Tetromino tetromino)
+    {
+      tetromino.Y++;
+    }
 
-    // private double _getBottomPosition()
+    // public static void Drop(Tetromino tetromino)
     // {
-    //   for (int i = 7; i > 3; i--)
-    //   {
-    //     if (shape[i])
-    //     {
-    //       return GameConstants.GridSize * 2 + (Y * GameConstants.GridSize);
-    //     }
-    //   }
-    //   return Y;
+    //   tetromino.Y++;
     // }
 
-
-    public void Update()
+    public static void MoveLeft(Tetromino tetromino)
     {
-      Y++;
-      // Console.WriteLine(location.Y);
+      tetromino.X--;
+    }
 
-      // if (_getBottomPosition() <= 0)
-      // {
-      //   Active = false;
-      // }
+    public static void MoveRight(Tetromino tetromino)
+    {
+      tetromino.X++;
     }
 
     public void Draw()
