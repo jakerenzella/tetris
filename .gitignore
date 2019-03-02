@@ -399,4 +399,5 @@ Temporary Items
 # Ignore all local history of files
 .history
 
+lib/SplashKit.cs
 # End of https://www.gitignore.io/api/macos,linux,csharp,visualstudiocode
