@@ -8,14 +8,13 @@ namespace Tetris
   {
     private Timer timer;
     private bool[,] grid;
-    private Tetrominos tetrominos;
+    private Tetromino _tetromino;
     private int ticks;
 
     public Game()
     {
       grid = new bool[10, 20];
-      tetrominos = new Tetrominos();
-      tetrominos.AddTetromino();
+      _tetromino = new Tetromino();
       ticks = 0;
       timer = new Timer("gametime");
       timer.Start();
@@ -27,20 +26,64 @@ namespace Tetris
       {
         for (int y = 0; y < 20; y++)
         {
-          SplashKit.DrawRectangle(Color.Gray, x * GameConstants.GameWidth, y * GameConstants.GameHeight, GameConstants.GameWidth, GameConstants.GameHeight);
+          SplashKit.DrawRectangle(Color.Gray, x * GameConstants.GridWidth, y * GameConstants.GridHeight, GameConstants.GridWidth, GameConstants.GridHeight);
           if (!grid[x, y])
           {
           }
-          tetrominos.Draw();
+          _tetromino.Draw();
         }
       }
     }
+
+// Delegate?
+    private bool _checkValidMove()
+    {
+      Tetromino testTetromino = (Tetromino)_tetromino.Clone();
+      testTetromino.Update();
+      return !_collision(testTetromino);
+    }
+
+    private bool _collision(Tetromino tetromino)
+    {
+      for (int row = 0; row < tetromino.Shape.GetLength(0); row++)
+      {
+        for (int col = 0; col < tetromino.Shape.Rank; col++)
+        {
+          Console.WriteLine($"Row: {row}, col: {col}");
+          Console.WriteLine($"Grid row: {row + tetromino.X}, grid col: {col + tetromino.Y}");
+          Console.WriteLine($"X: {tetromino.X}, Y: {tetromino.Y}");
+
+          if (col + tetromino.Y >= 20)
+          {
+            Console.WriteLine("Below Screen");
+            return true;
+          }
+          if (tetromino.Shape[row, col] && grid[row + tetromino.X, col + tetromino.Y])
+          {
+            Console.WriteLine("This shouldn't happen");
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    public void _killTetromino()
+    {
+
+    }
+
     public void Update()
     {
       if ((((int)timer.Ticks) / 1000) >= ticks)
       {
-        tetrominos.Update();
-        Console.WriteLine("Tick");
+
+        if (_checkValidMove())
+        {
+          Console.WriteLine("Valid");
+          _tetromino.Update();
+        }
+
         ticks++;
       }
     }

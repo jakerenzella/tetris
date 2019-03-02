@@ -24,7 +24,7 @@
              },
              "osx": {
                  "env": {
-                     "DYLD_LIBRARY_PATH": "/Users/jakerenzella/.splashkit/lib/macos"
+                     "DYLD_LIBRARY_PATH": "/Users/jake/.splashkit/lib/macos"
                  }
              },
              "windows": {
