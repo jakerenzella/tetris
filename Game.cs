@@ -15,7 +15,7 @@ namespace Tetris
 
     public Game()
     {
-      grid = new bool[10, 20];
+      grid = new bool[GameConstants.Columns, GameConstants.Rows];
       _tetromino = new Tetromino();
 
       ticks = inputDelay = 0;
@@ -25,9 +25,9 @@ namespace Tetris
 
     public void Draw()
     {
-      for (int x = 0; x < 10; x++)
+      for (int x = 0; x < GameConstants.Columns; x++)
       {
-        for (int y = 0; y < 20; y++)
+        for (int y = 0; y < GameConstants.Rows; y++)
         {
           if (grid[x, y])
           {
@@ -128,12 +128,60 @@ namespace Tetris
       }
       if (SplashKit.KeyDown(KeyCode.SpaceKey))
       {
-        while (_doOperation(Tetromino.Fall));
+        while (_doOperation(Tetromino.Fall)) ;
+      }
+    }
+
+    private bool _rowComplete(int row)
+    {
+      for (int x = 0; x < GameConstants.Columns; x++)
+      {
+        if (!grid[x, row])
+        {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    private void _deleteRow(int rowToDelete)
+    {
+      Console.WriteLine($"Deleting Row {rowToDelete}");
+      for (int row = rowToDelete; row > 0; row--)
+      {
+        for (int col = 0; col < GameConstants.Columns; col++)
+        {
+          grid[col, row] = grid[col, row - 1];
+        }
+      }
+
+      for (int col = 0; col < GameConstants.Columns; col++)
+      {
+        grid[col, 0] = false;
+      }
+    }
+
+    private void _clearLines()
+    {
+      int numRowsComplete = 0;
+      for (int row = GameConstants.Rows - 1; row >= 0; row--)
+      {
+        if (_rowComplete(row))
+        {
+          // Mark row as delete, see if next row is complete
+          _deleteRow(row);
+          Console.WriteLine($"{row} is now a full Line");
+          numRowsComplete++;
+        }
+        // else {
+        //   return;
+        // }
       }
     }
 
     public void Update()
     {
+      _clearLines();
       if ((((int)timer.Ticks) / 100) >= inputDelay)
       {
         CheckUserInput();

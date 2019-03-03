@@ -5,11 +5,11 @@ namespace Tetris
 {
   public static class GameConstants
   {
-    private const double columns = 10;
-    private const double rows = 20;
+    public const int Columns = 10;
+    public const int Rows = 20;
 
-    public static double GridWidth = SplashKit.CurrentWindowWidth() / columns;
-    public static double GridHeight = SplashKit.CurrentWindowHeight() / rows;
+    public static double GridWidth = SplashKit.CurrentWindowWidth() / Columns;
+    public static double GridHeight = SplashKit.CurrentWindowHeight() / Rows;
 
   }
 
