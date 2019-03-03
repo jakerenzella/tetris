@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace Tetris
 {
+
   public class Tetromino : ICloneable
   {
     public bool Active { get; set; }
@@ -29,15 +30,10 @@ namespace Tetris
 
     public Tetromino()
     {
-      X = 2;
-      Y = 0;
+      Shape = Shapes.GetRandomShape();
+      X = 5 - Width / 2;
+      Y = -2;
       Color = Color.Red;
-
-      Shape = new bool[,]
-      {
-          { true, true },
-          { true, true }
-      };
     }
 
     public object Clone()
