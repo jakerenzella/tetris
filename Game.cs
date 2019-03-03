@@ -9,6 +9,7 @@ namespace Tetris
     private Timer timer;
     private bool[,] grid;
     private Tetromino _tetromino;
+    private Tetromino _shadowTetromino;
     private int ticks;
     private int inputDelay;
     private delegate void Operation(Tetromino tetromino);
@@ -17,6 +18,7 @@ namespace Tetris
     {
       grid = new bool[GameConstants.Columns, GameConstants.Rows];
       _tetromino = new Tetromino();
+      _shadowTetromino = (Tetromino)_tetromino.Clone();
 
       ticks = inputDelay = 0;
       timer = new Timer("gametime");
@@ -40,11 +42,12 @@ namespace Tetris
         }
       }
       _tetromino.Draw();
+      _shadowTetromino.Draw();
     }
 
-    private bool _checkValidOperation(Operation operation)
+    private bool _checkValidOperation(Operation operation, Tetromino tetromino)
     {
-      Tetromino testTetromino = (Tetromino)_tetromino.Clone();
+      Tetromino testTetromino = (Tetromino)tetromino.Clone();
 
       operation(testTetromino);
       if (_isOffScreen(testTetromino))
@@ -58,14 +61,14 @@ namespace Tetris
       return true;
     }
 
-    private bool _doOperation(Operation operation)
+    private bool _doOperation(Operation operation, Tetromino tetromino)
     {
-      if (_checkValidOperation(operation))
+      if (_checkValidOperation(operation, tetromino))
       {
-        operation(_tetromino);
+        operation(tetromino);
         return true;
       }
-      if (operation == Tetromino.Fall)
+      if (operation == Tetromino.Fall && tetromino == _tetromino)
       {
         _killTetromino();
       }
@@ -116,20 +119,27 @@ namespace Tetris
     {
       if (SplashKit.KeyDown(KeyCode.LeftKey))
       {
-        _doOperation(Tetromino.MoveLeft);
+        _doOperation(Tetromino.MoveLeft, _tetromino);
       }
       if (SplashKit.KeyDown(KeyCode.RightKey))
       {
-        _doOperation(Tetromino.MoveRight);
+        _doOperation(Tetromino.MoveRight, _tetromino);
       }
       if (SplashKit.KeyDown(KeyCode.DownKey))
       {
-        _doOperation(Tetromino.Fall);
+        _doOperation(Tetromino.Fall, _tetromino);
       }
       if (SplashKit.KeyDown(KeyCode.SpaceKey))
       {
-        while (_doOperation(Tetromino.Fall)) ;
+        while (_doOperation(Tetromino.Fall, _tetromino)) ;
       }
+    }
+
+    private void _updateShadowTetromino()
+    {
+      _shadowTetromino = (Tetromino)_tetromino.Clone();
+      _shadowTetromino.Color = Color.LightGray;
+      while (_doOperation(Tetromino.Fall, _shadowTetromino)) ;
     }
 
     private bool _rowComplete(int row)
@@ -168,20 +178,17 @@ namespace Tetris
       {
         if (_rowComplete(row))
         {
-          // Mark row as delete, see if next row is complete
           _deleteRow(row);
           Console.WriteLine($"{row} is now a full Line");
           numRowsComplete++;
         }
-        // else {
-        //   return;
-        // }
       }
     }
 
     public void Update()
     {
       _clearLines();
+      _updateShadowTetromino();
       if ((((int)timer.Ticks) / 100) >= inputDelay)
       {
         CheckUserInput();
@@ -190,7 +197,7 @@ namespace Tetris
 
       if ((((int)timer.Ticks) / 1000) >= ticks)
       {
-        _doOperation(Tetromino.Fall);
+        _doOperation(Tetromino.Fall, _tetromino);
         ticks++;
       }
     }

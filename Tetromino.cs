@@ -7,7 +7,7 @@ namespace Tetris
   public class Tetromino : ICloneable
   {
     public bool Active { get; set; }
-    public Color clr { get; private set; }
+    public Color Color { get; set; }
     public bool[,] Shape { get; private set; }
     public int X, Y;
 
@@ -31,11 +31,12 @@ namespace Tetris
     {
       X = 2;
       Y = 0;
+      Color = Color.Red;
 
       Shape = new bool[,]
       {
-          { true, true, true, true, true, false },
-          { true, true, true, true, true, true }
+          { true, true },
+          { true, true }
       };
     }
 
@@ -69,7 +70,7 @@ namespace Tetris
           {
             double x = X * GameConstants.GridWidth + (col * GameConstants.GridWidth);
             double y = Y * GameConstants.GridHeight + (row * GameConstants.GridHeight);
-            SplashKit.FillRectangle(Color.Red, x, y, GameConstants.GridWidth, GameConstants.GridHeight);
+            SplashKit.FillRectangle(Color, x, y, GameConstants.GridWidth, GameConstants.GridHeight);
           }
         }
       }
