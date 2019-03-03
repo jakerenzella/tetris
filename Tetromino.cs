@@ -15,7 +15,7 @@ namespace Tetris
     {
       get
       {
-        return Math.Max(Shape.GetLength(0), Shape.GetLength(1));
+        return Shape.GetLength(1);
       }
     }
 
@@ -23,7 +23,7 @@ namespace Tetris
     {
       get
       {
-        return Shape.Rank;
+        return Shape.GetLength(0);
       }
     }
 
@@ -34,8 +34,8 @@ namespace Tetris
 
       Shape = new bool[,]
       {
-          { true, true, true, true, true },
-          { false, false, false, false, false }
+          { true, true, true, true, true, false },
+          { true, true, true, true, true, true }
       };
     }
 
