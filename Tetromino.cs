@@ -16,7 +16,7 @@ namespace Tetris
     {
       get
       {
-        return Shape.GetLength(1);
+        return Shape.GetShape.GetLength(1);
       }
     }
 
@@ -24,26 +24,43 @@ namespace Tetris
     {
       get
       {
-        return Shape.GetLength(0);
+        return Shape.GetShape.GetLength(0);
       }
+    }
+
+    void setup(Shape s)
+    {
+      this.Shape = s;
+      X = 5 - Width / 2;
+      Y = -2;
+      Color = s.Color;
+    }
+
+    public Tetromino(Shape s)
+    {
+      setup(s);
     }
 
     public Tetromino()
     {
-      Shape = Shapes.GetRandomShape();
-      X = 5 - Width / 2;
-      Y = -2;
-      Color = Color.Red;
+      setup(Shapes.GetRandomShape());
     }
 
-    public object Clone()
+    public Object Clone()
     {
-      return this.MemberwiseClone();
+      Tetromino t = (Tetromino)this.MemberwiseClone();
+      t.Shape = this.Shape.ShallowCopy();
+      return t;
     }
 
     public static void Fall(Tetromino tetromino)
     {
       tetromino.Y++;
+    }
+
+    public static void Rotate(Tetromino tetromino)
+    {
+      tetromino.Shape.Rotate();
     }
 
     public static void MoveLeft(Tetromino tetromino)
@@ -58,11 +75,11 @@ namespace Tetris
 
     public void Draw()
     {
-      for (int row = 0; row < Shape.GetLength(0); row++)
+      for (int row = 0; row < Shape.GetShape.GetLength(0); row++)
       {
-        for (int col = 0; col < Shape.GetLength(1); col++)
+        for (int col = 0; col < Shape.GetShape.GetLength(1); col++)
         {
-          if (Shape[row, col])
+          if (Shape.GetShape[row, col])
           {
             double x = X * GameConstants.GridWidth + (col * GameConstants.GridWidth);
             double y = Y * GameConstants.GridHeight + (row * GameConstants.GridHeight);

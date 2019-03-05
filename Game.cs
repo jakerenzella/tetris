@@ -99,7 +99,7 @@ namespace Tetris
       {
         for (int col = 0; col < tetromino.Height; col++)
         {
-          if (tetromino.Y > 0 && tetromino.Shape[col, row] && grid[row + tetromino.X, col + tetromino.Y])
+          if (tetromino.Y > 0 && tetromino.Shape.GetShape[col, row] && grid[row + tetromino.X, col + tetromino.Y])
           {
             return true;
           }
@@ -114,22 +114,18 @@ namespace Tetris
       {
         for (int col = 0; col < _tetromino.Height; col++)
         {
-          if (_tetromino.Shape[col, row])
+          if (_tetromino.Shape.GetShape[col, row])
           {
             grid[row + _tetromino.X, col + _tetromino.Y] = true;
           }
         }
       }
-      _killedTetrominos.Add(_tetromino);
+      // _killedTetrominos.Add(_tetromino);
       _tetromino = new Tetromino();
     }
 
     private void performDelayedUserInput()
     {
-      // if (SplashKit.KeyTyped(KeyCode.LeftKey))
-      // {
-      //   doOperation(Tetromino.MoveLeft, _tetromino);
-      // }
       if (SplashKit.KeyDown(KeyCode.LeftKey))
       {
         doOperation(Tetromino.MoveLeft, _tetromino);
@@ -147,6 +143,10 @@ namespace Tetris
 
     private void performInstantUserInput()
     {
+      if (SplashKit.KeyTyped(KeyCode.UpKey))
+      {
+        doOperation(Tetromino.Rotate, _tetromino);
+      }
       if (SplashKit.KeyTyped(KeyCode.LeftKey))
       {
         doOperation(Tetromino.MoveLeft, _tetromino);
