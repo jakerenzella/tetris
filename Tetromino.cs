@@ -9,7 +9,7 @@ namespace Tetris
   {
     public bool Active { get; set; }
     public Color Color { get; set; }
-    public bool[,] Shape { get; private set; }
+    public Shape Shape { get; private set; }
     public int X, Y;
 
     public int Width

@@ -1,5 +1,6 @@
 using System;
 using SplashKitSDK;
+using System.Collections.Generic;
 
 namespace Tetris
 {
@@ -10,6 +11,7 @@ namespace Tetris
     private bool[,] grid;
     private Tetromino _tetromino;
     private Tetromino _shadowTetromino;
+    private List<Tetromino> _killedTetrominos;
     private int ticks;
     private int inputDelay;
     private delegate void Operation(Tetromino tetromino);
@@ -17,6 +19,7 @@ namespace Tetris
     public Game()
     {
       grid = new bool[GameConstants.Columns, GameConstants.Rows];
+      _killedTetrominos = new List<Tetromino>();
       _tetromino = new Tetromino();
       _shadowTetromino = (Tetromino)_tetromino.Clone();
 
@@ -31,6 +34,10 @@ namespace Tetris
       {
         for (int y = 0; y < GameConstants.Rows; y++)
         {
+          foreach (var item in _killedTetrominos)
+          {
+            item.Draw();
+          }
           if (grid[x, y])
           {
             SplashKit.FillRectangle(Color.Gray, x * GameConstants.GridWidth, y * GameConstants.GridHeight, GameConstants.GridWidth, GameConstants.GridHeight);
@@ -41,6 +48,7 @@ namespace Tetris
           }
         }
       }
+
       _tetromino.Draw();
       _shadowTetromino.Draw();
     }
@@ -112,10 +120,11 @@ namespace Tetris
           }
         }
       }
+      _killedTetrominos.Add(_tetromino);
       _tetromino = new Tetromino();
     }
 
-    private void performUserInput()
+    private void performDelayedUserInput()
     {
       // if (SplashKit.KeyTyped(KeyCode.LeftKey))
       // {
@@ -132,6 +141,15 @@ namespace Tetris
       if (SplashKit.KeyDown(KeyCode.DownKey))
       {
         doOperation(Tetromino.Fall, _tetromino);
+      }
+
+    }
+
+    private void performInstantUserInput()
+    {
+      if (SplashKit.KeyTyped(KeyCode.LeftKey))
+      {
+        doOperation(Tetromino.MoveLeft, _tetromino);
       }
       if (SplashKit.KeyTyped(KeyCode.SpaceKey))
       {
@@ -193,7 +211,13 @@ namespace Tetris
     {
       clearLines();
       updateShadowTetromino();
-      performUserInput();
+
+      performInstantUserInput();
+      if ((((int)timer.Ticks) / 100) >= inputDelay)
+      {
+        performDelayedUserInput();
+        inputDelay++;
+      }
 
       if ((((int)timer.Ticks) / 1000) >= ticks)
       {
