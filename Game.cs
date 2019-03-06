@@ -14,6 +14,8 @@ namespace Tetris
     private List<Tetromino> _killedTetrominos;
     private int ticks;
     private int inputDelay;
+
+    private InputManager inputManager;
     private delegate void Operation(Tetromino tetromino);
 
     public Game()
@@ -22,6 +24,8 @@ namespace Tetris
       _killedTetrominos = new List<Tetromino>();
       _tetromino = new Tetromino();
       _shadowTetromino = (Tetromino)_tetromino.Clone();
+
+      inputManager = new InputManager();
 
       ticks = inputDelay = 0;
       timer = new Timer("gametime");
@@ -126,15 +130,15 @@ namespace Tetris
 
     private void performDelayedUserInput()
     {
-      if (SplashKit.KeyDown(KeyCode.LeftKey))
+      if (inputManager.KeyDown(KeyCode.LeftKey))
       {
         doOperation(Tetromino.MoveLeft, _tetromino);
       }
-      if (SplashKit.KeyDown(KeyCode.RightKey))
+      if (inputManager.KeyDown(KeyCode.RightKey))
       {
         doOperation(Tetromino.MoveRight, _tetromino);
       }
-      if (SplashKit.KeyDown(KeyCode.DownKey))
+      if (inputManager.KeyDown(KeyCode.DownKey))
       {
         doOperation(Tetromino.Fall, _tetromino);
       }
@@ -143,15 +147,15 @@ namespace Tetris
 
     private void performInstantUserInput()
     {
-      if (SplashKit.KeyTyped(KeyCode.UpKey))
+      if (inputManager.KeyTyped(KeyCode.UpKey))
       {
         doOperation(Tetromino.Rotate, _tetromino);
       }
-      if (SplashKit.KeyTyped(KeyCode.LeftKey))
+      if (inputManager.KeyTyped(KeyCode.LeftKey))
       {
         doOperation(Tetromino.MoveLeft, _tetromino);
       }
-      if (SplashKit.KeyTyped(KeyCode.SpaceKey))
+      if (inputManager.KeyTyped(KeyCode.SpaceKey))
       {
         while (doOperation(Tetromino.Fall, _tetromino)) ;
       }
