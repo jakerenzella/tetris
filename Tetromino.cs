@@ -30,7 +30,7 @@ namespace Tetris
 
     void setup(Shape s)
     {
-      this.Shape = s;
+      this.Shape = s.ShallowCopy();
       X = 5 - Width / 2;
       Y = -2;
       Color = s.Color;
