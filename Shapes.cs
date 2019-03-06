@@ -111,8 +111,7 @@ namespace Tetris
             new bool[,] {
                           { true, false },
                           { true, true },
-                          { true, true },
-                          { false, false }
+                          { false, true }
                         },
             new bool[,] {
                           { false, true, true },
