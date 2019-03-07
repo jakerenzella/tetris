@@ -17,6 +17,12 @@ namespace Tetris
         new Shape
         {
           Color = Color.Cyan,
+          Blocks = new bool[,] {
+            {false,false,false,false},
+            {true,true,true,true},
+            {false,false,false,false},
+            {false,false,false,false}
+          },
           Rotations = new List<bool[,]>() // ----
           {
             new bool[,] { { true, true, true, true } },
@@ -31,6 +37,11 @@ namespace Tetris
         new Shape
         {
           Color = Color.Blue,
+          Blocks = new bool[,] { // J
+            { true, false, false },
+            { true, true, true },
+            { false, false, false },
+          },
           Rotations = new List<bool[,]>() // J
           {
             new bool[,] {
@@ -60,6 +71,11 @@ namespace Tetris
         new Shape
         {
           Color = Color.Yellow,
+          Blocks =
+            new bool[,] { // O
+              { true, true },
+              { true, true }
+            },
           Rotations = new List<bool[,]>() // O
           {
             new bool[,] {
@@ -73,7 +89,12 @@ namespace Tetris
         new Shape
         {
           Color = Color.Purple,
-          Rotations = new List<bool[,]>() // J
+          Blocks = new bool[,] { // T
+            {false,true,false},
+            {true,true,true},
+            {false,false,false},
+          },
+          Rotations = new List<bool[,]>() // T
           {
             new bool[,] {
                           { false, true, false },
@@ -101,6 +122,11 @@ namespace Tetris
         new Shape
         {
           Color = Color.BrightGreen,
+          Blocks = new bool[,] { // S
+            { false, true, true },
+            { true, true, false },
+            { false, false, false },
+          },
           Rotations = new List<bool[,]>() // S
           {
             new bool[,] {
@@ -129,6 +155,11 @@ namespace Tetris
         new Shape
         {
           Color = Color.Red,
+          Blocks = new bool[,] { // Z
+            { true, true, false },
+            { false, true, true },
+            { false, false, false },
+          },
           Rotations = new List<bool[,]>() // Z
           {
             new bool[,] {

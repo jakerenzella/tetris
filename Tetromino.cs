@@ -88,6 +88,21 @@ namespace Tetris
         }
       }
 
+      for (int row = 0; row < Shape.Blocks.GetLength(0); row++) {
+        for (int col = 0; col < Shape.Blocks.GetLength(1); col++) {
+          if (Shape.Blocks[col,row]) {
+            double x = (X + row + 0.5) * GameConstants.GridWidth;
+            double y = (Y + col + 0.5) * GameConstants.GridWidth;
+            SplashKit.FillCircle(
+              Color.Black,
+              new Circle {
+                Center = new Point2D {X = x, Y = y},
+                Radius = 2
+              }
+            );
+          }
+        }
+      }
     }
   }
 }
