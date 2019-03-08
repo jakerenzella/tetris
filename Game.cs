@@ -4,14 +4,12 @@ using System.Collections.Generic;
 
 namespace Tetris
 {
-
   public class Game
   {
     private Timer timer;
     private bool[,] grid;
     private Tetromino _tetromino;
     private Tetromino _shadowTetromino;
-    private List<Tetromino> _killedTetrominos;
     private int ticks;
     private int inputDelay;
 
@@ -21,7 +19,6 @@ namespace Tetris
     public Game()
     {
       grid = new bool[GameConstants.Columns, GameConstants.Rows];
-      _killedTetrominos = new List<Tetromino>();
       _tetromino = new Tetromino();
       _shadowTetromino = (Tetromino)_tetromino.Clone();
 
@@ -34,14 +31,11 @@ namespace Tetris
 
     public void Draw()
     {
+      _shadowTetromino.Draw();
       for (int x = 0; x < GameConstants.Columns; x++)
       {
         for (int y = 0; y < GameConstants.Rows; y++)
         {
-          foreach (var item in _killedTetrominos)
-          {
-            item.Draw();
-          }
           if (grid[x, y])
           {
             SplashKit.FillRectangle(Color.Gray, x * GameConstants.GridWidth, y * GameConstants.GridHeight, GameConstants.GridWidth, GameConstants.GridHeight);
@@ -52,9 +46,7 @@ namespace Tetris
           }
         }
       }
-
       _tetromino.Draw();
-      _shadowTetromino.Draw();
     }
 
     private bool _checkValidOperation(Operation operation, Tetromino tetromino)
@@ -124,7 +116,6 @@ namespace Tetris
           }
         }
       }
-      // _killedTetrominos.Add(_tetromino);
       _tetromino = new Tetromino();
     }
 
@@ -150,10 +141,6 @@ namespace Tetris
       if (inputManager.KeyTyped(KeyCode.UpKey))
       {
         doOperation(Tetromino.Rotate, _tetromino);
-      }
-      if (inputManager.KeyTyped(KeyCode.LeftKey))
-      {
-        doOperation(Tetromino.MoveLeft, _tetromino);
       }
       if (inputManager.KeyTyped(KeyCode.SpaceKey))
       {

@@ -10,6 +10,7 @@ class InputManager
     KeyCallback typedCB;
     KeyCallback downCB;
     KeyCallback upCB;
+
     public InputManager () {
       keyTyped = new Dictionary<int, bool>();
       keyDown = new Dictionary<int, bool>();
