@@ -33,6 +33,7 @@ namespace Tetris
       initialiseGrid();
       _tetromino = new Tetromino();
       _shadowTetromino = (Tetromino)_tetromino.Clone();
+      _shadowTetromino.Type = PieceType.Shadow;
 
       inputManager = new InputManager();
 

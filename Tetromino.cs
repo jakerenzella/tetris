@@ -9,22 +9,20 @@ namespace Tetris
   {
     public bool Active { get; set; }
     public Shape Shape { get; private set; }
-    public PieceType Type
-    {
-      get
-      {
-        return Shape.Type;
-      }
-      set { }
-    }
 
-    public Color Color
+    public PieceType Type { get; set; }
+
+    public Color TetrominoColor
     {
       get
       {
-        return Extensions.PieceTypeToColor(Shape.Type);
+        Color c = Extensions.PieceTypeToColor(Shape.Type);
+        if (Type == PieceType.Shadow)
+        {
+          c.A = 120;
+        }
+        return c;
       }
-      set { }
     }
     public int X, Y;
 
@@ -49,6 +47,7 @@ namespace Tetris
       this.Shape = s;
       X = 5 - Width / 2;
       Y = -2;
+      Type = s.Type;
     }
 
     public Tetromino(Shape s)
@@ -98,7 +97,7 @@ namespace Tetris
           {
             double x = X * GameConstants.GridWidth + (col * GameConstants.GridWidth);
             double y = Y * GameConstants.GridHeight + (row * GameConstants.GridHeight);
-            SplashKit.FillRectangle(Color, x, y, GameConstants.GridWidth, GameConstants.GridHeight);
+            SplashKit.FillRectangle(TetrominoColor, x, y, GameConstants.GridWidth, GameConstants.GridHeight);
           }
         }
       }

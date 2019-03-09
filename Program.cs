@@ -24,7 +24,7 @@ namespace Tetris
       {
         game.Update();
 
-        w.Clear(Color.White);
+        w.Clear(Color.Black);
         game.Draw();
 
         SplashKit.RefreshScreen(60);
