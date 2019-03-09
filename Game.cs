@@ -7,7 +7,7 @@ namespace Tetris
   public class Game
   {
     private Timer timer;
-    private bool[,] grid;
+    private PieceType[,] grid;
     private Tetromino _tetromino;
     private Tetromino _shadowTetromino;
     private int ticks;
@@ -16,9 +16,21 @@ namespace Tetris
     private InputManager inputManager;
     private delegate void Operation(Tetromino tetromino);
 
+    private void initialiseGrid()
+    {
+      for (int x = 0; x < GameConstants.Columns; x++)
+      {
+        for (int y = 0; y < GameConstants.Rows; y++)
+        {
+          grid[x, y] = PieceType.Empty;
+        }
+      }
+    }
+
     public Game()
     {
-      grid = new bool[GameConstants.Columns, GameConstants.Rows];
+      grid = new PieceType[GameConstants.Columns, GameConstants.Rows];
+      initialiseGrid();
       _tetromino = new Tetromino();
       _shadowTetromino = (Tetromino)_tetromino.Clone();
 
@@ -29,6 +41,11 @@ namespace Tetris
       timer.Start();
     }
 
+    private bool isLocationOccupied(int x, int y)
+    {
+      return (grid[x, y] != PieceType.Empty);
+    }
+
     public void Draw()
     {
       _shadowTetromino.Draw();
@@ -36,14 +53,14 @@ namespace Tetris
       {
         for (int y = 0; y < GameConstants.Rows; y++)
         {
-          if (grid[x, y])
+          if (isLocationOccupied(x, y))
           {
-            SplashKit.FillRectangle(Color.Gray, x * GameConstants.GridWidth, y * GameConstants.GridHeight, GameConstants.GridWidth, GameConstants.GridHeight);
+            SplashKit.FillRectangle(Extensions.PieceTypeToColor(grid[x,y]), x * GameConstants.GridWidth, y * GameConstants.GridHeight, GameConstants.GridWidth, GameConstants.GridHeight);
           }
-          else
-          {
+          // else
+          // {
             SplashKit.DrawRectangle(Color.Gray, x * GameConstants.GridWidth, y * GameConstants.GridHeight, GameConstants.GridWidth, GameConstants.GridHeight);
-          }
+          // }
         }
       }
       _tetromino.Draw();
@@ -95,7 +112,7 @@ namespace Tetris
       {
         for (int col = 0; col < tetromino.Height; col++)
         {
-          if (tetromino.Y > 0 && tetromino.Shape.GetShape[col, row] && grid[row + tetromino.X, col + tetromino.Y])
+          if (tetromino.Y > 0 && tetromino.Shape.GetShape[col, row] && isLocationOccupied(row + tetromino.X, col + tetromino.Y))
           {
             return true;
           }
@@ -112,7 +129,7 @@ namespace Tetris
         {
           if (_tetromino.Shape.GetShape[col, row])
           {
-            grid[row + _tetromino.X, col + _tetromino.Y] = true;
+            grid[row + _tetromino.X, col + _tetromino.Y] = _tetromino.Type;
           }
         }
       }
@@ -151,7 +168,7 @@ namespace Tetris
     private void updateShadowTetromino()
     {
       _shadowTetromino = (Tetromino)_tetromino.Clone();
-      _shadowTetromino.Color = Color.LightGray;
+      _shadowTetromino.Type = PieceType.Shadow;
       while (doOperation(Tetromino.Fall, _shadowTetromino)) ;
     }
 
@@ -159,7 +176,7 @@ namespace Tetris
     {
       for (int x = 0; x < GameConstants.Columns; x++)
       {
-        if (!grid[x, row])
+        if (!isLocationOccupied(x, row))
         {
           return false;
         }
@@ -180,7 +197,7 @@ namespace Tetris
 
       for (int col = 0; col < GameConstants.Columns; col++)
       {
-        grid[col, 0] = false;
+        grid[col, 0] = PieceType.Empty;
       }
     }
 

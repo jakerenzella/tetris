@@ -1,23 +1,18 @@
 using System;
 using SplashKitSDK;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Tetris
 {
   public static class Shapes
   {
-    private static Random rng = new Random();
-    public static Shape GetRandomShape()
-    {
-      return _tetrisFigures[rng.Next(_tetrisFigures.Count)];
-    }
-
-    private static List<Shape> _tetrisFigures = new List<Shape>()
+    public static List<Shape> TetrisFigures = new List<Shape>()
     {
         new Shape
         {
-          Color = Color.Cyan,
-          Rotations = new List<bool[,]>() // ----
+          Type = PieceType.I,
+          Rotations = new List<bool[,]>()
           {
             new bool[,] { { true, true, true, true } },
             new bool[,] { { true },
@@ -30,8 +25,8 @@ namespace Tetris
 
         new Shape
         {
-          Color = Color.Blue,
-          Rotations = new List<bool[,]>() // J
+          Type = PieceType.J,
+          Rotations = new List<bool[,]>()
           {
             new bool[,] {
                           { true, false, false },
@@ -59,7 +54,7 @@ namespace Tetris
 
         new Shape
         {
-          Color = Color.Yellow,
+          Type = PieceType.O,
           Rotations = new List<bool[,]>() // O
           {
             new bool[,] {
@@ -72,8 +67,8 @@ namespace Tetris
 
         new Shape
         {
-          Color = Color.Purple,
-          Rotations = new List<bool[,]>() // J
+          Type = PieceType.T,
+          Rotations = new List<bool[,]>() // T
           {
             new bool[,] {
                           { false, true, false },
@@ -100,7 +95,7 @@ namespace Tetris
 
         new Shape
         {
-          Color = Color.BrightGreen,
+          Type = PieceType.S,
           Rotations = new List<bool[,]>() // S
           {
             new bool[,] {
@@ -128,7 +123,7 @@ namespace Tetris
 
         new Shape
         {
-          Color = Color.Red,
+          Type = PieceType.Z,
           Rotations = new List<bool[,]>() // Z
           {
             new bool[,] {

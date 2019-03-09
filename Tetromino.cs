@@ -8,8 +8,24 @@ namespace Tetris
   public class Tetromino : ICloneable
   {
     public bool Active { get; set; }
-    public Color Color { get; set; }
     public Shape Shape { get; private set; }
+    public PieceType Type
+    {
+      get
+      {
+        return Shape.Type;
+      }
+      set { }
+    }
+
+    public Color Color
+    {
+      get
+      {
+        return Extensions.PieceTypeToColor(Shape.Type);
+      }
+      set { }
+    }
     public int X, Y;
 
     public int Width
@@ -33,7 +49,6 @@ namespace Tetris
       this.Shape = s;
       X = 5 - Width / 2;
       Y = -2;
-      Color = s.Color;
     }
 
     public Tetromino(Shape s)
@@ -43,7 +58,7 @@ namespace Tetris
 
     public Tetromino()
     {
-      setup(Shapes.GetRandomShape());
+      setup(PieceGenerator.GetNextShape());
     }
 
     public Object Clone()

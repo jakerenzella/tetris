@@ -1,9 +1,10 @@
 using System;
+using SplashKitSDK;
 
 namespace Tetris
 {
-  enum GridColor
+  public enum PieceType : byte
   {
-      
+      T, J, L, I, O, S, Z, Empty, Shadow
   }
 }
